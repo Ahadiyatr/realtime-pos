@@ -55,14 +55,19 @@ export default function Login() {
   });
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-xl">Welcome</CardTitle>
-        <CardDescription>Login to Access all features</CardDescription>
+    <Card className="bg-[#FDF6EC]/95 dark:bg-gray-900/70 backdrop-blur-xl border border-[#FF6B35]/20 shadow-2xl rounded-2xl">
+      <CardHeader className="text-center space-y-2">
+        <CardTitle className="text-2xl font-heading text-[#3B2C35] dark:text-[#FDF6EC]">
+          Welcome Back
+        </CardTitle>
+        <CardDescription className="text-[#6A4C93] dark:text-gray-400 font-medium">
+          Login to access all features ✨
+        </CardDescription>
       </CardHeader>
+
       <CardContent>
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-5">
             <FormInput
               form={form}
               type="email"
@@ -77,7 +82,14 @@ export default function Login() {
               label="Password"
               placeholder="******"
             />
-            <Button type="submit">Login</Button>
+
+            <Button
+              type="submit"
+              disabled={isPendingLogin}
+              className="w-full bg-[#FF6B35] hover:bg-[#F7B267] text-white font-semibold py-3 rounded-xl shadow-md transition-transform hover:scale-[1.02]"
+            >
+              {isPendingLogin ? "Logging in..." : "Login"}
+            </Button>
           </form>
         </Form>
       </CardContent>
