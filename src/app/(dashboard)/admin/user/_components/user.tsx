@@ -5,6 +5,7 @@ import DropdownAction from "@/components/common/dropdown-action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HEADER_TABLE_USER } from "@/constants/user-constant";
+import useDataTable from "@/hooks/use-data-table";
 import { createClient } from "@/lib/supabase/client";
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
@@ -14,25 +15,34 @@ import { toast } from "sonner";
 
 export default function UserManagement() {
   const supabase = createClient();
+  const { currentPage, currentLimit, handleChangeLimit, handleChangePage } =
+    useDataTable();
   const { data: users, isLoading } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", currentPage, currentLimit],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const result = await supabase
         .from("profiles")
         .select("*", { count: "exact" })
+        // page = 1
+        // limit = 10
+        // .range = (0,9)
+        // page = 2
+        // limit = 10
+        // range (10, 19)
+        .range((currentPage - 1) * currentLimit, currentPage * currentLimit - 1)
         .order("created_at");
 
-      if (error)
+      if (result.error)
         toast.error("Get User Data Fail", {
-          description: error.message,
+          description: result.error.message,
         });
 
-      return data;
+      return result;
     },
   });
 
   const filteredData = useMemo(() => {
-    return (users || []).map((user, index) => {
+    return (users?.data || []).map((user, index) => {
       return [
         index + 1,
         user.id,
@@ -64,6 +74,12 @@ export default function UserManagement() {
       ];
     });
   }, [users]);
+
+  const totalPages = useMemo(() => {
+    return users && users.count !== null
+      ? Math.ceil(users.count / currentLimit)
+      : 0;
+  }, [users]);
   return (
     <div className="w-full">
       <div className="flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full">
@@ -81,6 +97,11 @@ export default function UserManagement() {
         header={HEADER_TABLE_USER}
         data={filteredData}
         isLoading={isLoading}
+        totalPages={totalPages}
+        currentPage={currentPage}
+        currentLimit={currentLimit}
+        onChangePage={handleChangePage}
+        onChangeLimit={handleChangeLimit}
       />
     </div>
   );
