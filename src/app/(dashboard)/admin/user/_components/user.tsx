@@ -1,39 +1,40 @@
 "use client";
 
-import { DataTable } from "@/components/common/data-table";
+import DataTable from "@/components/common/data-table";
 import DropdownAction from "@/components/common/dropdown-action";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { HEADER_TABLE_USER } from "@/constants/user-constant";
 import useDataTable from "@/hooks/use-data-table";
 import { createClient } from "@/lib/supabase/client";
-import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
-import { Pencil, Trash2 } from "lucide-react";
+import { Currency, Pencil, Trash2 } from "lucide-react";
 import { useMemo } from "react";
 import { toast } from "sonner";
 
 export default function UserManagement() {
   const supabase = createClient();
-  const { currentPage, currentLimit, handleChangeLimit, handleChangePage } =
-    useDataTable();
+  const {
+    currentPage,
+    currentLimit,
+    currentSearch,
+    handleChangePage,
+    handleChangeLimit,
+    handleChangeSearch,
+  } = useDataTable();
   const { data: users, isLoading } = useQuery({
-    queryKey: ["users", currentPage, currentLimit],
+    queryKey: ["users", currentPage, currentLimit, currentSearch],
     queryFn: async () => {
       const result = await supabase
         .from("profiles")
         .select("*", { count: "exact" })
-        // page = 1
-        // limit = 10
-        // .range = (0,9)
-        // page = 2
-        // limit = 10
-        // range (10, 19)
         .range((currentPage - 1) * currentLimit, currentPage * currentLimit - 1)
-        .order("created_at");
+        .order("created_at")
+        .ilike("name", `%${currentSearch}%`);
 
       if (result.error)
-        toast.error("Get User Data Fail", {
+        toast.error("Get User data failed", {
           description: result.error.message,
         });
 
@@ -52,7 +53,7 @@ export default function UserManagement() {
           menu={[
             {
               label: (
-                <span className="flex items-center gap-2">
+                <span className="flex item-center gap-2">
                   <Pencil />
                   Edit
                 </span>
@@ -61,7 +62,7 @@ export default function UserManagement() {
             },
             {
               label: (
-                <span className="flex items-center gap-2">
+                <span className="flex item-center gap-2">
                   <Trash2 className="text-red-400" />
                   Delete
                 </span>
@@ -79,13 +80,17 @@ export default function UserManagement() {
     return users && users.count !== null
       ? Math.ceil(users.count / currentLimit)
       : 0;
-  }, [users]);
+  }, [users, currentLimit]);
+
   return (
     <div className="w-full">
       <div className="flex flex-col lg:flex-row mb-4 gap-2 justify-between w-full">
         <h1 className="text-2xl font-bold">User Management</h1>
         <div className="flex gap-2">
-          <Input placeholder="Search by name" />
+          <Input
+            placeholder="Search by name"
+            onChange={e => handleChangeSearch(e.target.value)}
+          />
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline">Create</Button>
