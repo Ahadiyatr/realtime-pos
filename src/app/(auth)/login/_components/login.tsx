@@ -52,7 +52,7 @@ export default function Login() {
         loginAction(null);
       });
     }
-  }, [loginState]);
+  }, [loginState, loginAction]);
 
   return (
     <Card className="bg-[#FDF6EC]/95 dark:bg-gray-900/70 backdrop-blur-xl border border-[#FF6B35]/20 shadow-2xl rounded-2xl">

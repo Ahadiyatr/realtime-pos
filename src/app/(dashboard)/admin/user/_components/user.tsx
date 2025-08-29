@@ -85,7 +85,7 @@ export default function UserManagement() {
     return users && users.count !== null
       ? Math.ceil(users.count / currentLimit)
       : 0;
-  }, [users]);
+  }, [users, currentLimit]);
 
   return (
     <div className="w-full">

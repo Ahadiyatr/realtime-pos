@@ -12,6 +12,7 @@ import { Form } from '@/components/ui/form';
 import {
   INITIAL_CREATE_USER_FORM,
   INITIAL_STATE_CREATE_USER,
+  ROLE_LIST,
 } from '@/constants/auth-constant';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,6 +25,7 @@ import {
   createUserSchema,
 } from '@/validations/auth-validation';
 import { createUser } from '../action';
+import FormSelect from '@/components/common/form-select';
 
 export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
   const form = useForm<createUserForm>({
@@ -58,7 +60,7 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
       document.querySelector<HTMLButtonElement>('[data-state="open"]')?.click();
       refetch();
     }
-  }, [createUserState]);
+  }, [createUserState, form, refetch]);
 
   return (
     <DialogContent className="sm:max-w-[425px]">
@@ -81,11 +83,11 @@ export default function DialogCreateUser({ refetch }: { refetch: () => void }) {
             placeholder="Insert email here"
             type="email"
           />
-          <FormInput
+          <FormSelect
             form={form}
             name="role"
             label="Role"
-            placeholder="Insert your role"
+            selectItem={ROLE_LIST}
           />
           <FormInput
             form={form}
