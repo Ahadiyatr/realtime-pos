@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import FormInput from "@/components/common/form-input";
-import { Button } from "@/components/ui/button";
+import FormInput from '@/components/common/form-input';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
+} from '@/components/ui/card';
+import { Form } from '@/components/ui/form';
 import {
   INITIAL_LOGIN_FORM,
   INITIAL_STATE_LOGIN_FORM,
-} from "@/constants/auth-constants";
-import { LoginForm, loginSchemaForm } from "@/validations/auth-validations";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { startTransition, useActionState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { login } from "../actions";
-import { toast } from "sonner";
+} from '@/constants/auth-constant';
+import { LoginForm, loginSchemaForm } from '@/validations/auth-validation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { startTransition, useActionState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { login } from '../actions';
+import { toast } from 'sonner';
 
 export default function Login() {
   const form = useForm<LoginForm>({
@@ -44,15 +44,15 @@ export default function Login() {
   });
 
   useEffect(() => {
-    if (loginState?.status === "error") {
-      toast.error("Login Failed", {
+    if (loginState?.status === 'error') {
+      toast.error('Login Failed', {
         description: loginState.errors?._form?.[0],
       });
       startTransition(() => {
         loginAction(null);
       });
     }
-  });
+  }, [loginState]);
 
   return (
     <Card className="bg-[#FDF6EC]/95 dark:bg-gray-900/70 backdrop-blur-xl border border-[#FF6B35]/20 shadow-2xl rounded-2xl">
@@ -88,7 +88,7 @@ export default function Login() {
               disabled={isPendingLogin}
               className="w-full bg-[#FF6B35] hover:bg-[#F7B267] text-white font-semibold py-3 rounded-xl shadow-md transition-transform hover:scale-[1.02]"
             >
-              {isPendingLogin ? "Logging in..." : "Login"}
+              {isPendingLogin ? 'Logging in...' : 'Login'}
             </Button>
           </form>
         </Form>

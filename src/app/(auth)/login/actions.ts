@@ -1,15 +1,15 @@
-"use server";
+'use server';
 
-import { INITIAL_STATE_LOGIN_FORM } from "@/constants/auth-constants";
-import { createClient } from "@/lib/supabase/server";
-import { AuthFormState } from "@/types/auth";
-import { loginSchemaForm } from "@/validations/auth-validations";
-import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { INITIAL_STATE_LOGIN_FORM } from '@/constants/auth-constant';
+import { createClient } from '@/lib/supabase/server';
+import { AuthFormState } from '@/types/auth';
+import { loginSchemaForm } from '@/validations/auth-validation';
+import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export async function login(
-  preStave: AuthFormState,
+  prevState: AuthFormState,
   FormData: FormData | null
 ) {
   if (!FormData) {
@@ -17,13 +17,13 @@ export async function login(
   }
 
   const validateFields = loginSchemaForm.safeParse({
-    email: FormData.get("email"),
-    password: FormData.get("password"),
+    email: FormData.get('email'),
+    password: FormData.get('password'),
   });
 
   if (!validateFields.success) {
     return {
-      status: "error",
+      status: 'error',
       erros: {
         ...validateFields.error.flatten().fieldErrors,
         _form: [],
@@ -40,30 +40,30 @@ export async function login(
 
   if (error) {
     return {
-      status: "error",
+      status: 'error',
       errors: {
-        ...preStave.errors,
+        ...prevState.errors,
         _form: [error.message],
       },
     };
   }
 
   const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user?.id)
+    .from('profiles')
+    .select('*')
+    .eq('id', user?.id)
     .single();
 
   if (profile) {
     const cookieStore = await cookies();
-    cookieStore.set("user_profile", JSON.stringify(profile), {
+    cookieStore.set('user_profile', JSON.stringify(profile), {
       httpOnly: true,
-      path: "/",
-      sameSite: "lax",
+      path: '/',
+      sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 365, // 1 Year
     });
   }
 
-  revalidatePath("/", "layout");
-  redirect("/");
+  revalidatePath('/', 'layout');
+  redirect('/');
 }

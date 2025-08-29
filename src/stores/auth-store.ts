@@ -1,7 +1,7 @@
-import { User } from "@supabase/supabase-js";
-import { create } from "zustand";
-import { Profile } from "@/types/auth";
-import { INITIAL_STATE_PROFILE } from "@/constants/auth-constants";
+import { User } from '@supabase/supabase-js';
+import { create } from 'zustand';
+import { Profile } from '@/types/auth';
+import { INITIAL_STATE_PROFILE } from '@/constants/auth-constant';
 
 type AuthState = {
   user: User | null;
