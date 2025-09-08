@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { FileImage } from 'lucide-react';
 import { Input } from '../ui/input';
 import { getImageData } from '@/lib/utils';
+import { Preview } from '@/types/general';
 
 export default function FormImage<T extends FieldValues>({
   form,
@@ -21,12 +22,9 @@ export default function FormImage<T extends FieldValues>({
   form: UseFormReturn<T>;
   name: Path<T>;
   label: string;
-  preview?: {
-    file: File;
-    displayUrl: string;
-  };
+  preview?: Preview;
 
-  setPreview?: (preview: { file: File; displayUrl: string }) => void;
+  setPreview?: (preview: Preview) => void;
 }) {
   return (
     <FormField
