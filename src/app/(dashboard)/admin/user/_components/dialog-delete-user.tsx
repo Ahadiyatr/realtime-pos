@@ -2,7 +2,7 @@ import DialogDelete from '@/components/common/dialog-delete';
 import { Profile } from '@/types/auth';
 import { startTransition, useActionState, useEffect } from 'react';
 import { deleteUser } from '../actions';
-import { INITIAL_STATE_ACTION } from '@/components/common/general-constant';
+import { INITIAL_STATE_ACTION } from '@/constants/general-constant';
 import { toast } from 'sonner';
 
 export default function DialogDeleteUser({
@@ -40,6 +40,7 @@ export default function DialogDeleteUser({
       handleChangeAction?.(false);
       refetch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteUserState]);
 
   return (

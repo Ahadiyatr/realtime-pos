@@ -77,6 +77,7 @@ export default function DialogUpdateUser({
       handleChangeAction?.(false);
       refetch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateUserState]);
 
   useEffect(() => {
@@ -89,6 +90,7 @@ export default function DialogUpdateUser({
         displayUrl: currentData.avatar_url as string,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentData]);
 
   return (

@@ -12,6 +12,14 @@ export function getImageData(event: ChangeEvent<HTMLInputElement>) {
   return { file, displayUrl };
 }
 
+export function convertIDR(number: number) {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    minimumFractionDigits: 0,
+  }).format(number);
+}
+
 // export function getImageData(event: ChangeEvent<HTMLInputElement>) {
 //   const dataTransfer = new DataTransfer();
 
