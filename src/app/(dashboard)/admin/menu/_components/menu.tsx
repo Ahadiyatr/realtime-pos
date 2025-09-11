@@ -5,7 +5,7 @@ import DropdownAction from '@/components/common/dropdown-action';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { HEADER_TABLE_MENU } from '@/constants/menu-constants';
+import { HEADER_TABLE_MENU } from '@/constants/menu-constant';
 import useDataTable from '@/hooks/use-data-table';
 import { createClient } from '@/lib/supabase/client';
 import { cn, convertIDR } from '@/lib/utils';

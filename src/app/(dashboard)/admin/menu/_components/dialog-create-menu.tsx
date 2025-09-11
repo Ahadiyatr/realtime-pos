@@ -6,7 +6,7 @@ import { Preview } from '@/types/general';
 import { createMenu } from '../actions';
 import { MenuForm, menuFormSchema } from '@/validations/menu-validation';
 import FormMenu from './form-menu';
-import { INITIAL_MENU, INITIAL_STATE_MENU } from '@/constants/menu-constants';
+import { INITIAL_MENU, INITIAL_STATE_MENU } from '@/constants/menu-constant';
 
 export default function DialogCreateMenu({ refetch }: { refetch: () => void }) {
   const form = useForm<MenuForm>({
