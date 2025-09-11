@@ -61,6 +61,7 @@ export default function DialogUpdateMenu({
       handleChangeAction?.(false);
       refetch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateMenuState]);
 
   useEffect(() => {
@@ -77,6 +78,7 @@ export default function DialogUpdateMenu({
         displayUrl: currentData.image_url as string,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentData]);
 
   return (
