@@ -1,4 +1,4 @@
-import DetailOrder from './_components/detail-order';
+import DetailOrder from './add/_components/detail-order';
 
 export const metadata = {
   title: 'WPU Cafe | Detail Order',

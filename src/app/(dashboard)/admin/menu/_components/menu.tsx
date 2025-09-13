@@ -29,6 +29,7 @@ export default function MenuManagement() {
     handleChangeLimit,
     handleChangeSearch,
   } = useDataTable();
+
   const {
     data: menus,
     isLoading,
